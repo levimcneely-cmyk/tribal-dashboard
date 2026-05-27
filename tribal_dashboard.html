@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tribal Training | Team Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#E05A1C;
+  --orange-dim:#7a2e0e;
+  --black:#000;
+  --surface:#0d0d0d;
+  --border:#1c1c1c;
+  --border-subtle:#111;
+  --text:#e8e8e8;
+  --text-muted:#aaa;
+  --text-dim:#444;
+  --text-dimmer:#2e2e2e;
+  --green:#5cb86a;
+  --blue:#4a9ad4;
+}
+body{background:var(--black);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;padding:24px 16px}
+.wrap{max-width:900px;margin:0 auto}
+
+/* HEADER */
+.hdr{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--border);margin-bottom:20px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;color:#fff;line-height:1}
+.logo span{color:var(--orange)}
+.tag{font-size:10px;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px}
+.wpill{background:var(--orange);color:#fff;font-size:11px;font-weight:500;padding:5px 14px;border-radius:20px;white-space:nowrap}
+
+/* SECTION LABEL */
+.sec{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dimmer);font-weight:500;margin:0 0 10px}
+
+/* STAT CARDS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.sv{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;color:#fff}
+.sv.hot{color:var(--orange)}
+.sl{font-size:11px;color:var(--text-dim);margin-top:3px}
+
+/* LEADERBOARD */
+.lb{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px}
+.lbh{display:grid;grid-template-columns:26px minmax(0,1fr) 70px 70px 70px 58px;padding:8px 14px;border-bottom:1px solid var(--border)}
+.lbh div{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dimmer)}
+.lbr{display:grid;grid-template-columns:26px minmax(0,1fr) 70px 70px 70px 58px;padding:10px 14px;border-bottom:1px solid var(--border-subtle);align-items:center;transition:background 0.15s}
+.lbr:last-child{border-bottom:none}
+.lbr:hover{background:#111}
+.rk{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--text-dimmer)}
+.rk.t{color:var(--orange)}
+.nm{font-size:13px;font-weight:500;color:var(--text)}
+.sp{font-size:10px;color:var(--text-dim);margin-top:1px}
+.bar-wrap{height:2px;background:#1a1a1a;border-radius:1px;margin-top:4px}
+.bar-fill{height:2px;background:var(--orange);border-radius:1px;transition:width 1s ease}
+.lv{font-size:12px;color:var(--text-muted)}
+.dots{display:flex;gap:3px}
+.d{width:7px;height:7px;border-radius:50%;background:#1c1c1c}
+.d.on{background:var(--orange)}
+.d.half{background:var(--orange-dim)}
+.empty-lb{padding:32px;text-align:center;color:var(--text-dim);font-size:13px}
+
+/* BOTTOM GRID */
+.btm{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+
+/* RACES */
+.rrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-subtle)}
+.rrow:last-of-type{border-bottom:none}
+.rdt{font-size:11px;color:var(--text-dim);width:38px;flex-shrink:0}
+.rn{font-size:13px;font-weight:500;color:#ddd}
+.rd{font-size:10px;color:var(--text-dim);margin-top:1px}
+.rbadge{font-size:10px;padding:2px 8px;border-radius:20px;margin-left:auto;flex-shrink:0;font-weight:500}
+.bbu{background:#1a1a0a;color:#c98a30;border:1px solid #3a2e10}
+.b70{background:#0a0d1a;color:var(--blue);border:1px solid #10203a}
+.bfl{background:#1a0a0a;color:#c94040;border:1px solid #3a1010}
+.b10{background:#0a1a10;color:var(--green);border:1px solid #103a18}
+.bsp{background:#1a0d1a;color:#b06fd4;border:1px solid #2e1a3a}
+.boly{background:#0a0d1a;color:var(--blue);border:1px solid #10203a}
+.bother{background:#1a1a1a;color:var(--text-muted);border:1px solid #333}
+
+/* ROSTER */
+.roster{margin-top:12px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.chip{font-size:10px;padding:2px 8px;border-radius:20px;background:#161616;border:1px solid #222;color:var(--text-dim)}
+.chip.in{background:#0a1a0d;border-color:#1a4020;color:var(--green)}
+
+/* CHALLENGES */
+.crow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-subtle)}
+.crow:last-child{border-bottom:none}
+.cico{width:26px;height:26px;border-radius:6px;background:#161616;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.cn{font-size:13px;font-weight:500;color:#ddd}
+.cs{font-size:10px;color:var(--text-dim);margin-top:1px}
+.cstat{font-size:11px;font-weight:500;margin-left:auto;white-space:nowrap}
+.ca{color:var(--orange)}
+.cd{color:var(--green)}
+
+/* LOADING */
+.loading{text-align:center;padding:60px 20px;color:var(--text-dim);font-size:13px;letter-spacing:1px;text-transform:uppercase}
+.loading span{color:var(--orange)}
+
+/* FOOTER */
+.footer{text-align:center;padding:24px 0 8px;font-size:11px;color:var(--text-dimmer);letter-spacing:1px;text-transform:uppercase}
+
+@media(max-width:600px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .btm{grid-template-columns:1fr}
+  .lbh,.lbr{grid-template-columns:22px minmax(0,1fr) 54px 54px 0 50px}
+  .lbh div:nth-child(5),.lbr .lv:nth-child(5){display:none}
+  .logo{font-size:24px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr">
+    <div>
+      <div class="logo">TRIBAL<span>.</span>TRAINING</div>
+      <div class="tag">Team Training Dashboard</div>
+    </div>
+    <div class="wpill" id="week-label">Loading...</div>
+  </div>
+
+  <div id="main-content">
+    <div class="loading">Pulling team data<span>.</span></div>
+  </div>
+
+  <div class="footer">Auto-updates nightly · Powered by Strava</div>
+</div>
+
+<script>
+// ── SHEET CSV URLS ───────────────────────────────────────────
+var URLS = {
+  weekly:     'https://docs.google.com/spreadsheets/d/e/2PACX-1vSM8koFSQTNJWrYKk6PDt3JyNX9Dp17YI3j_g-Em6ftvW32ZUaYDGXag_lu4R5BKi58uE4b_ypb2SkJ/pub?gid=194470996&single=true&output=csv',
+  races:      'https://docs.google.com/spreadsheets/d/e/2PACX-1vSM8koFSQTNJWrYKk6PDt3JyNX9Dp17YI3j_g-Em6ftvW32ZUaYDGXag_lu4R5BKi58uE4b_ypb2SkJ/pub?gid=227531088&single=true&output=csv',
+  challenges: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSM8koFSQTNJWrYKk6PDt3JyNX9Dp17YI3j_g-Em6ftvW32ZUaYDGXag_lu4R5BKi58uE4b_ypb2SkJ/pub?gid=448036996&single=true&output=csv',
+  athletes:   'https://docs.google.com/spreadsheets/d/e/2PACX-1vSM8koFSQTNJWrYKk6PDt3JyNX9Dp17YI3j_g-Em6ftvW32ZUaYDGXag_lu4R5BKi58uE4b_ypb2SkJ/pub?gid=86882950&single=true&output=csv',
+};
+
+// ── CSV PARSER ───────────────────────────────────────────────
+function parseCSV(text) {
+  var lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  var headers = lines[0].split(',').map(function(h){ return h.trim().replace(/^"|"$/g,''); });
+  return lines.slice(1).map(function(line) {
+    var cols = line.match(/(".*?"|[^,]+|(?<=,)(?=,)|^(?=,)|(?<=,)$)/g) || line.split(',');
+    cols = cols.map(function(c){ return (c||'').trim().replace(/^"|"$/g,''); });
+    var obj = {};
+    headers.forEach(function(h,i){ obj[h] = cols[i] || ''; });
+    return obj;
+  });
+}
+
+async function fetchCSV(url) {
+  var res = await fetch(url);
+  return parseCSV(await res.text());
+}
+
+// ── DATE HELPERS ─────────────────────────────────────────────
+function getMonday(d) {
+  var day = d.getDay(), diff = d.getDate() - day + (day===0?-6:1);
+  return new Date(d.setDate(diff));
+}
+function fmtWeek(d) {
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+function fmtRaceDate(str) {
+  if (!str) return '';
+  var d = new Date(str + 'T00:00:00');
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}).replace(',','');
+}
+function fmtRaceDateShort(str) {
+  if (!str) return '';
+  var d = new Date(str + 'T00:00:00');
+  var yr = d.getFullYear();
+  var now = new Date().getFullYear();
+  if (yr !== now) return d.toLocaleDateString('en-US',{month:'short',year:'2-digit'});
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+
+// ── BADGE ────────────────────────────────────────────────────
+function distBadge(dist) {
+  var d = (dist||'').toLowerCase();
+  if (d.includes('backyard')) return ['bbu','Backyard'];
+  if (d.includes('full') || d.includes('ironman') || d.includes('140')) return ['bfl','Full'];
+  if (d.includes('70') || d.includes('half')) return ['b70','70.3'];
+  if (d.includes('100 mile') || d.includes('100m')) return ['b10','100 Mi'];
+  if (d.includes('sprint')) return ['bsp','Sprint'];
+  if (d.includes('olympic') || d.includes('oly')) return ['boly','Olympic'];
+  return ['bother', dist||'Race'];
+}
+
+// ── STREAK DOTS ──────────────────────────────────────────────
+function streakDots(n) {
+  n = parseInt(n) || 0;
+  var html = '<div class="dots">';
+  for (var i=0;i<5;i++) {
+    if (i < Math.min(n,5)) html += '<div class="d on"></div>';
+    else html += '<div class="d"></div>';
+  }
+  return html + '</div>';
+}
+
+// ── CHALLENGE ICON ───────────────────────────────────────────
+function chalIcon(icon, status) {
+  var color = status === 'active' ? 'var(--orange)' : 'var(--green)';
+  var icons = {
+    flame:'🔥', mountain:'⛰', trophy:'🏆', swim:'🏊', run:'🏃', bike:'🚴', star:'⭐'
+  };
+  return icons[icon] || '●';
+}
+
+// ── RENDER ───────────────────────────────────────────────────
+async function render() {
+  var weekStart = getMonday(new Date());
+  var weekLabel = 'Week of ' + fmtWeek(weekStart);
+  document.getElementById('week-label').textContent = weekLabel;
+
+  var [weekly, races, challenges, athletes] = await Promise.all([
+    fetchCSV(URLS.weekly),
+    fetchCSV(URLS.races),
+    fetchCSV(URLS.challenges),
+    fetchCSV(URLS.athletes),
+  ]);
+
+  // Get current week label from sheet or use most recent
+  var weeks = [...new Set(weekly.map(function(r){return r.Week;}))].sort().reverse();
+  var currentWeek = weeks[0] || '';
+  var weekRows = weekly.filter(function(r){ return r.Week === currentWeek; });
+  weekRows.sort(function(a,b){ return parseFloat(b.Miles||0) - parseFloat(a.Miles||0); });
+
+  // Team stats
+  var totalMiles = weekRows.reduce(function(s,r){ return s+parseFloat(r.Miles||0); },0);
+  var totalSessions = weekRows.reduce(function(s,r){ return s+parseInt(r.Sessions||0); },0);
+  var avgConsistency = weekRows.length
+    ? Math.round(weekRows.reduce(function(s,r){ return s+parseFloat(r.ConsistencyPct||0); },0)/weekRows.length)
+    : 0;
+  var activeAthletes = weekRows.length;
+
+  // Max miles for bar scaling
+  var maxMiles = weekRows.length ? parseFloat(weekRows[0].Miles||1) : 1;
+
+  // Upcoming races
+  var today = new Date(); today.setHours(0,0,0,0);
+  var upcomingRaces = races.filter(function(r){
+    return r.Date && new Date(r.Date+'T00:00:00') >= today;
+  }).sort(function(a,b){ return new Date(a.Date) - new Date(b.Date); });
+
+  var nextRace = upcomingRaces[0];
+
+  // Build leaderboard rows
+  var lbRows = weekRows.length === 0
+    ? '<div class="empty-lb">No training data yet — athletes connecting soon</div>'
+    : weekRows.map(function(r, i) {
+        var pct = Math.round((parseFloat(r.Miles||0)/maxMiles)*100);
+        var topClass = i < 3 ? ' t' : '';
+        var miles = parseFloat(r.Miles||0).toFixed(1);
+        var hours = parseFloat(r.Hours||0).toFixed(1);
+        var sessions = r.Sessions || '0';
+        return '<div class="lbr">'
+          + '<div class="rk'+topClass+'">'+(i+1)+'</div>'
+          + '<div><div class="nm">'+r.Athlete+'</div>'
+          + '<div class="bar-wrap"><div class="bar-fill" style="width:'+pct+'%"></div></div></div>'
+          + '<div class="lv">'+miles+'</div>'
+          + '<div class="lv">'+hours+'</div>'
+          + '<div class="lv">'+sessions+'</div>'
+          + streakDots(r.ActiveDays)
+          + '</div>';
+      }).join('');
+
+  // Build race rows
+  var raceRows = upcomingRaces.slice(0,4).map(function(r) {
+    var badge = distBadge(r.Distance);
+    return '<div class="rrow">'
+      + '<div class="rdt">'+fmtRaceDateShort(r.Date)+'</div>'
+      + '<div><div class="rn">'+r.Name+'</div>'
+      + (r.Location ? '<div class="rd">'+r.Location+'</div>' : '')
+      + '</div>'
+      + '<div class="rbadge '+badge[0]+'">'+badge[1]+'</div>'
+      + '</div>';
+  }).join('');
+
+  // Build roster for next race
+  var rosterHtml = '';
+  if (nextRace) {
+    var signedUp = (nextRace.Signups||'').split(',').map(function(s){return s.trim();}).filter(Boolean);
+    var allAthletes = athletes.map(function(a){ return a.Name||''; }).filter(Boolean).slice(0,20);
+    if (allAthletes.length > 0 || signedUp.length > 0) {
+      var displayList = signedUp.length > 0 ? signedUp : [];
+      var chips = displayList.map(function(n){
+        return '<div class="chip in">'+n+'</div>';
+      }).join('');
+      rosterHtml = '<div class="roster">'
+        + '<div class="sec" style="margin:0 0 6px">Signed up — '+nextRace.Name+'</div>'
+        + '<div class="chips">'+(chips||'<span style="font-size:11px;color:var(--text-dim)">No signups yet</span>')+'</div>'
+        + '</div>';
+    }
+  }
+
+  // Build challenge rows
+  var chalRows = challenges.map(function(c) {
+    var isActive = (c.Status||'').toLowerCase() === 'active';
+    return '<div class="crow">'
+      + '<div class="cico">'+chalIcon(c.Icon, c.Status)+'</div>'
+      + '<div><div class="cn">'+c.Name+'</div><div class="cs">'+c.Description+'</div></div>'
+      + '<div class="cstat '+(isActive?'ca':'cd')+'">'+(isActive?'Active':'Done ✓')+'</div>'
+      + '</div>';
+  }).join('');
+
+  var html = ''
+    + '<div class="sec">Team this week</div>'
+    + '<div class="stats">'
+    + '<div class="sc"><div class="sv hot">'+Math.round(totalMiles).toLocaleString()+'</div><div class="sl">Total miles</div></div>'
+    + '<div class="sc"><div class="sv">'+activeAthletes+'</div><div class="sl">Active athletes</div></div>'
+    + '<div class="sc"><div class="sv">'+totalSessions+'</div><div class="sl">Activities logged</div></div>'
+    + '<div class="sc"><div class="sv hot">'+avgConsistency+'%</div><div class="sl">Consistency rate</div></div>'
+    + '</div>'
+    + '<div class="sec">Weekly leaderboard</div>'
+    + '<div class="lb">'
+    + '<div class="lbh"><div></div><div>athlete</div><div>miles</div><div>hours</div><div>sessions</div><div>streak</div></div>'
+    + lbRows
+    + '</div>'
+    + '<div class="btm">'
+    + '<div class="panel"><div class="sec" style="margin:0 0 10px">Upcoming races</div>'+raceRows+rosterHtml+'</div>'
+    + '<div class="panel"><div class="sec" style="margin:0 0 10px">Challenges</div>'+chalRows+'</div>'
+    + '</div>';
+
+  document.getElementById('main-content').innerHTML = html;
+}
+
+render().catch(function(e){
+  document.getElementById('main-content').innerHTML = '<div class="loading">Error loading data — check back shortly</div>';
+  console.error(e);
+});
+</script>
+</body>
+</html>
