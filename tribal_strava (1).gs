@@ -19,8 +19,8 @@
 // ── CONFIGURATION ───────────────────────────────────────────
 
 var CONFIG = {
-  CLIENT_ID:     'YOUR_CLIENT_ID_HERE',       // from strava.com/settings/api
-  CLIENT_SECRET: 'YOUR_CLIENT_SECRET_HERE',   // from strava.com/settings/api
+  CLIENT_ID:     '251984',       // from strava.com/settings/api
+  CLIENT_SECRET: 'c76ddf41df337f9fa3426fba4cb5c7b208e078f6',   // from strava.com/settings/api
   SHEET_NAME:    'Tribal Training Data',
   WEEKS_BACK:    0,   // 0 = current week-to-date (correct for nightly sync)
 };
